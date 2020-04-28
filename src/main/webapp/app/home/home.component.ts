@@ -16,6 +16,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   account: Account;
   authSubscription: Subscription;
   modalRef: NgbModalRef;
+  company: string;
+  firstName: string;
+  surname: string;
+  isError: boolean;
+  message: string;
 
   constructor(
     private accountService: AccountService,
@@ -24,6 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.message = '';
     this.accountService.identity().subscribe((account: Account) => {
       this.account = account;
     });
@@ -36,6 +42,24 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.account = account;
       });
     });
+  }
+  save() {
+    this.accountService.testApi(this.company, this.firstName, this.surname).subscribe(data => {
+      this.message = data.body.message;
+      this.isError = data.body.error;
+    });
+  }
+
+  displayMessage() {
+    if (this.message.length > 0) {
+      if (this.isError) {
+        return 2;
+      } else {
+        return 1;
+      }
+    } else {
+      return 0;
+    }
   }
 
   isAuthenticated() {

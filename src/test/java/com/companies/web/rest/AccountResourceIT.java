@@ -2,6 +2,7 @@ package com.companies.web.rest;
 
 import com.companies.CompaniesHouseApp;
 import com.companies.security.AuthoritiesConstants;
+import com.companies.service.ApiService;
 import com.companies.web.rest.errors.ExceptionTranslator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,11 +25,18 @@ public class AccountResourceIT {
     @Autowired
     private ExceptionTranslator exceptionTranslator;
 
+    @Autowired
+    private final ApiService apiService;
+
     private MockMvc mockMvc;
+
+    public AccountResourceIT(ApiService apiService) {
+        this.apiService = apiService;
+    }
 
     @BeforeEach
     public void setup() {
-        AccountResource accountUserMockResource = new AccountResource();
+        AccountResource accountUserMockResource = new AccountResource(apiService);
         this.mockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource)
                 .setControllerAdvice(exceptionTranslator)
                 .build();

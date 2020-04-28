@@ -3,35 +3,40 @@
         <span class="hipster img-fluid rounded"></span>
     </div>
     <div class="col-md-9">
-        <h1 class="display-4">Welcome, Java Hipster!</h1>
-        <p class="lead">This is your homepage</p>
+        <h2 class="display-7">Companies House Address Search</h2>
+        <p class="lead">Enter the company name and officer of the company as registered <br/> with companies house to return the company's registered address.</p>
 
-        <div [ngSwitch]="isAuthenticated()">
-            <div class="alert alert-success" *ngSwitchCase="true">
-                <span id="home-logged-message" *ngIf="account"
-                   > You are logged in as user "{{account.login}}". </span>
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm" class="col-md-6">
+            <div class="form-group">
+                <label class="form-control-label" for="field_company">Company Name</label>
+                <input type="text" class="form-control" name="company" id="field_company"
+                       [(ngModel)]="company" />
             </div>
 
-            <div class="alert alert-warning" *ngSwitchCase="false">
-                <span>If you want to </span>
-                <a class="alert-link" (click)="login()">sign in</a><span>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
+            <div class="row" >
+                <div class="form-group" class="col-md-6">
+                    <label class="form-control-label" for="field_firstname">First Name</label>
+                    <input type="text" class="form-control" name="firstname" id="field_firstname"
+                           [(ngModel)]="firstName" />
+                </div>
+                <div class="form-group" class="col-md-6">
+                    <label class="form-control-label" for="field_surname">Surname</label>
+                    <input type="text" class="form-control" name="surname" id="field_surname"
+                           [(ngModel)]="surname" />
+                </div>
             </div>
-        </div>
+            <div [ngSwitch]="displayMessage()">
+                <div class="alert alert-success"  *ngSwitchCase="1">
+                    <span id="found-address-success">{{message}}. </span>
+                </div>
+                <div class="alert alert-danger"  *ngSwitchCase="2">
+                    <span id="found-address-fail"> {{message}}. </span>
+                </div>
+            </div>
 
-        <p>
-            If you have any question on JHipster:
-        </p>
-
-        <ul>
-            <li><a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">JHipster homepage</a></li>
-            <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener noreferrer">JHipster on Stack Overflow</a></li>
-            <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener noreferrer">JHipster bug tracker</a></li>
-            <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">JHipster public chat room</a></li>
-            <li><a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer">follow @jhipster on Twitter</a></li>
-        </ul>
-
-        <p>
-            <span>If you like JHipster, don't forget to give us a star on</span> <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">GitHub</a>!
-        </p>
+            <button type="submit" [disabled]="editForm.form.invalid" class="btn btn-primary">
+                <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Submit</span>
+            </button>
+        </form>
     </div>
 </div>

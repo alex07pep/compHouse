@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, Subject, of } from 'rxjs';
 import { shareReplay, tap, catchError } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { Account } from 'app/core/user/account.model';
+import { ApiResponse } from 'app/home/homeApiResponse.model';
+
+export type EntityResponseType = HttpResponse<ApiResponse>;
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -14,6 +17,13 @@ export class AccountService {
   private accountCache$: Observable<Account>;
 
   constructor(private http: HttpClient) {}
+
+  testApi(companyName: String, firstName: string, surname: string): Observable<EntityResponseType> {
+    return this.http.get<ApiResponse>(
+      SERVER_API_URL + 'api/account/test?companyName=' + companyName + '&firstName=' + firstName + '&surname=' + surname,
+      { observe: 'response' }
+    );
+  }
 
   fetch(): Observable<Account> {
     return this.http.get<Account>(SERVER_API_URL + 'api/account');
